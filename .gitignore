@@ -110,6 +110,11 @@ dist
 # FuseBox cache
 .fusebox/
 
+
+# Lavalink
+*.jar
+application.yml
+
 # DynamoDB Local files
 .dynamodb/
 

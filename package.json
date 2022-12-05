@@ -1,0 +1,25 @@
+{
+  "name": "nezha",
+  "version": "1.0.0",
+  "description": "Basic discord music bot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/berryes/nezha.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/berryes/nezha/issues"
+  },
+  "homepage": "https://github.com/berryes/nezha#readme",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "poru": "^3.7.3"
+  }
+}
