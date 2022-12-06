@@ -1,9 +1,10 @@
 const { EmbedBuilder } = require("@discordjs/builders")
 
 class MusicEmbed {
-    constructor(player,track){
-        this.player = player,
-        this.track = track,
+    constructor(object){
+        this.player = object.player ?? null,
+        this.track = object.track ?? null,
+        this.playlist = object.playlist ?? "Playlist",
         this.title,
         this.author,
         this.description,
@@ -11,9 +12,7 @@ class MusicEmbed {
         this.footer,
         this.color
     }
-    play(){
-/*         console.log(this.player,this.track) */
-
+    play(){ // n
         const embedus = new EmbedBuilder()
         .setTitle(this.track.info.title)
         .setURL(this.track.info.uri)
@@ -27,5 +26,24 @@ class MusicEmbed {
 
         return embedus;
     }
+    found(){
+        const embedus = new EmbedBuilder()
+        .setDescription("Loading track(s)")
+        return embedus
+    }
+    end(){
+        const embedus = new EmbedBuilder()
+        .setDescription("next track")
+        return embedus
+    }
+    stop(){
+
+    }
+    playlist(){
+        const embedus = new EmbedBuilder()
+        .setTitle()
+        return embedus
+    }
+
 }
 module.exports = {MusicEmbed}

@@ -9,6 +9,7 @@ module.exports = async (client,message) =>
             .split(/ +/g);
 
             const command = client.commands.get(args[0]);
+            if(!command) return; 
             args.shift();
 
             command.execute(client,message,args);

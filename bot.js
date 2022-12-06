@@ -16,7 +16,7 @@ const client = new Client({
   const PoruOptions = {
     reconnectTime: 0,
     resumeKey: "MyPlayers",
-    resumeTimeout: 60,
+    resumeTimeout: 0,
     defaultPlatform: "ytsearch",
   };
 const musicNodes = [
@@ -34,11 +34,23 @@ client.jukebox = new Poru(client, musicNodes, PoruOptions);
 client.jukebox.on("trackStart", (player, track) => {
   const channel = client.channels.cache.get(player.textChannel);
 
-  const embed = new MusicEmbed(player,track)
-  let asa = embed.play()
-  
-  return channel.send({embeds: [asa]});
+  const embed = new MusicEmbed({player:player,track:track})
+
+  return channel.send({embeds: [embed.play()]});
 });
+
+client.jukebox.on("nodeClose", (node) => {
+  console.log("lost connection to node")
+})
+
+client.jukebox.on("trackEnd",  (player,track,oldtrack) => {
+  const embed = new MusicEmbed({player:player,track:track})
+  
+  console.log("track ended")
+
+   client.channels.cache.get(player.textChannel).send({embeds: [embed.end()]})
+})
+
 
 client.on("ready", () => {
   console.log("Ready!");

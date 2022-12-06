@@ -1,7 +1,8 @@
+const { ErrorEmbed } = require("../Controllers/errorEmbed");
+
 module.exports = {
     execute: async (client,message,args) =>{
         
-        const res = await client.jukebox.resolve(args.join(" "));
 
         const player = client.jukebox.createConnection({
             guildId: message.guild.id,
@@ -9,13 +10,11 @@ module.exports = {
             textChannel: message.channel.id,
             selfDeaf: true
           });
+
+        const errorEmbed = new ErrorEmbed("notPlaying")
+        if(!player.isPlaying) return message.reply({embeds:[errorEmbed.get()]})
         
-
-          const track = res.tracks[0];
-          track.info.requester = message.author;
-          player.queue.add(track);
-          /* message.reply(`Queued Track \n \`${track.title}\``); */
-
-          player.play();
+        
+        player.stop()
     }
 }
