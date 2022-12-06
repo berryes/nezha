@@ -13,7 +13,12 @@ const client = new Client({
     ],
   });
 
-
+  const PoruOptions = {
+    reconnectTime: 0,
+    resumeKey: "MyPlayers",
+    resumeTimeout: 60,
+    defaultPlatform: "ytsearch",
+  };
 const musicNodes = [
   {
     name: "asd",
@@ -22,10 +27,22 @@ const musicNodes = [
     password: process.env.LAVALINK_NODE_PASSWORD
   }
 ]
-client.jukebox = new Poru(client, nodes, PoruOptions);
-client.poru.on("trackStart", (player, track) => {
+
+client.config = new Collection();
+client.jukebox = new Poru(client, musicNodes, PoruOptions);
+
+client.jukebox.on("trackStart", (player, track) => {
   const channel = client.channels.cache.get(player.textChannel);
-  return channel.send(`Now playing \`${track.title}\``);
+
+  const embed = new MusicEmbed(player,track)
+  let asa = embed.play()
+  
+  return channel.send({embeds: [asa]});
+});
+
+client.on("ready", () => {
+  console.log("Ready!");
+  client.jukebox.init(client);
 });
 
 
@@ -44,7 +61,8 @@ client.poru.on("trackStart", (player, track) => {
 
 // command and even handeling
 client.commands = new Collection();
-const fs = require("fs")
+const fs = require("fs");
+const { MusicEmbed } = require('./Controllers/musicEmbed');
 const events = fs
   .readdirSync("./events")
   .filter((file) => file.endsWith(".js"));
