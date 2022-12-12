@@ -19,6 +19,8 @@ const client = new Client({
     resumeTimeout: 0,
     defaultPlatform: "ytsearch",
   };
+
+
 const musicNodes = [
   {
     name: "asd",
@@ -31,22 +33,25 @@ const musicNodes = [
 client.config = new Collection();
 client.jukebox = new Poru(client, musicNodes, PoruOptions);
 
+// when music starts
 client.jukebox.on("trackStart", (player, track) => {
-  const channel = client.channels.cache.get(player.textChannel);
-
-  const embed = new MusicEmbed({player:player,track:track})
-
-  return channel.send({embeds: [embed.play()]});
+  const channel = client.channels.cache.get(player.textChannel); // getting text channel
+  const embed = new MusicEmbed({player:player,track:track}) // creating embed
+  
+  return channel.send({embeds: [embed.play()]}); // sending embed
 });
 
+
+// When node dies
 client.jukebox.on("nodeClose", (node) => {
   console.log("lost connection to node")
 })
 
-client.jukebox.on("trackEnd",  (player,track,oldtrack) => {
+// When music ends
+client.jukebox.on("queueEnd",  (player,track) => {
   const embed = new MusicEmbed({player:player,track:track})
   
-  console.log("track ended")
+  console.log("Queue end")
 
    client.channels.cache.get(player.textChannel).send({embeds: [embed.end()]})
 })
@@ -75,6 +80,7 @@ client.on("ready", () => {
 client.commands = new Collection();
 const fs = require("fs");
 const { MusicEmbed } = require('./Controllers/musicEmbed');
+const moment = require('moment/moment');
 const events = fs
   .readdirSync("./events")
   .filter((file) => file.endsWith(".js"));

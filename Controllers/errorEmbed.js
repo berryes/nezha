@@ -14,4 +14,4 @@ class ErrorEmbed {
 
 }
 
-module.exports = { ErrorEmbed}
+module.exports = {ErrorEmbed}

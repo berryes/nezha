@@ -1,4 +1,5 @@
 const { MusicEmbed } = require("../Controllers/musicEmbed");
+const played = require("../Database/models/played");
 
 module.exports = {
     execute: async (client,message,args) =>{
@@ -17,18 +18,21 @@ module.exports = {
           }
           
           if(res.loadType === "LOAD_FAILED") return message.reply("Failed to load stream");
+          if(res.loadType === "NO_MATCHES") return message.reply("No track found");
+          if(res.loadType === "LOAD_FAILED") return message.reply("Failed to load");
           
 
           // in case its a playlist
           if(res.loadType === "PLAYLIST_LOADED"){
+            const playedModel = await played()
             
             // adding tracks
             for (const track of res.tracks) {
                 track.info.requester = message.author;
                 player.queue.add(track);
+                await playedModel.create({uri: track.info.uri })
               }
 
-              
               // in case player is not playing
               if (!player.isPlaying) return player.play();
 
@@ -39,9 +43,15 @@ module.exports = {
           player.queue.add(track);
 
           const embed = new MusicEmbed({player:player}).found()
-          message.reply({embeds: [embed]})
+
+          let deletion = await message.reply({embeds: [embed]})
+          deletion.delete()
+
+          const playedModel = await played()
+          await playedModel.create({uri: res.tracks[0].info.uri })
 
           if (!player.isPlaying) return player.play();
+
 
     }
 }

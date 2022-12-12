@@ -18,8 +18,12 @@
   },
   "homepage": "https://github.com/berryes/nezha#readme",
   "dependencies": {
+    "dayjs": "^1.11.7",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "poru": "^3.7.3"
+    "moment": "^2.29.4",
+    "poru": "^3.7.3",
+    "sequelize": "^6.26.0",
+    "sqlite3": "^5.1.2"
   }
 }

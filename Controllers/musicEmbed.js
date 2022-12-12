@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require("@discordjs/builders")
+const { EmbedBuilder } = require("@discordjs/builders");
+const dayjs = require("dayjs");
 
 class MusicEmbed {
     constructor(object){
@@ -13,6 +14,15 @@ class MusicEmbed {
         this.color
     }
     play(){ // n
+
+        let seconds = Math.floor((this.track.info.length / 1000) % 60),
+        minutes = Math.floor((this.track.info.length / (1000 * 60)) % 60),
+        hours = Math.floor((this.track.info.length / (1000 * 60 * 60)) % 24);
+        
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
         const embedus = new EmbedBuilder()
         .setTitle(this.track.info.title)
         .setURL(this.track.info.uri)
@@ -22,7 +32,7 @@ class MusicEmbed {
         })
         .setThumbnail(this.track.info.image)
         .setTimestamp()
-        .setDescription(`** ${this.track.info.length} ** | <#${this.player.voiceChannel}>`)
+        .setDescription(`** ${hours + ":" + minutes + ":" + seconds} ** | <#${this.player.voiceChannel}>`)
 
         return embedus;
     }
@@ -33,9 +43,10 @@ class MusicEmbed {
     }
     end(){
         const embedus = new EmbedBuilder()
-        .setDescription("next track")
+        .setDescription("Queue ended")
         return embedus
     }
+
     stop(){
 
     }
