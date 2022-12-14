@@ -17,7 +17,9 @@ module.exports = {
             player.queue.add(res.tracks[0])
           }
           
-          if(res.loadType === "LOAD_FAILED") return message.reply("Failed to load stream");
+          if(res.loadType === "LOAD_FAILED") { message.reply("Failed to load stream")
+            return console.log(res)
+        }
           if(res.loadType === "NO_MATCHES") return message.reply("No track found");
           if(res.loadType === "LOAD_FAILED") return message.reply("Failed to load");
           
